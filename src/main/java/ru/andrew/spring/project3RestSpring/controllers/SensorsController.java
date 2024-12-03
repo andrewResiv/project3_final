@@ -1,7 +1,6 @@
 package ru.andrew.spring.project3RestSpring.controllers;
 
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.andrew.spring.project3RestSpring.dto.SensorDTO;
 import ru.andrew.spring.project3RestSpring.models.Sensor;
 import ru.andrew.spring.project3RestSpring.services.SensorService;
-import ru.andrew.spring.project3RestSpring.util.SensorErrorResponce;
-import ru.andrew.spring.project3RestSpring.util.SensorNotCreatedException;
-import ru.andrew.spring.project3RestSpring.util.SensorNotFoundException;
+import ru.andrew.spring.project3RestSpring.exceptions.SensorNotCreatedException;
 import ru.andrew.spring.project3RestSpring.util.SensorValidator;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -72,23 +68,4 @@ public class SensorsController {
         sensorService.save(sensor);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
-
-    @ExceptionHandler
-    private ResponseEntity<SensorErrorResponce> handlerException(SensorNotFoundException e) {
-        SensorErrorResponce response = new SensorErrorResponce(
-                "Sensor with that id wasn't found!",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); //404
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<SensorErrorResponce> handlerException(SensorNotCreatedException e) {
-        SensorErrorResponce response = new SensorErrorResponce(
-                e.getMessage(),
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
 }

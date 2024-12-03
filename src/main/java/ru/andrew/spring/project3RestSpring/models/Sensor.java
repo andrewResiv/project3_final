@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Sensor {
 
 
     @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Measurement> measurements;
+    private List<Measurement> measurements = new ArrayList<>();
 
 
     public Sensor(String name) {
@@ -32,4 +33,14 @@ public class Sensor {
     }
 
     public Sensor() {}
+
+    public void addMeasurement(Measurement measurement) {
+        measurements.add(measurement);
+        measurement.setSensor(this); // Устанавливаем обратную связь
+    }
+
+    public void removeMeasurement(Measurement measurement) {
+        measurements.remove(measurement);
+        measurement.setSensor(null); // Удаляем обратную связь
+    }
 }

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.andrew.spring.project3RestSpring.dto.SensorDTO;
 import ru.andrew.spring.project3RestSpring.models.Sensor;
 import ru.andrew.spring.project3RestSpring.repositories.SensorRepository;
-import ru.andrew.spring.project3RestSpring.util.SensorNotFoundException;
+import ru.andrew.spring.project3RestSpring.exceptions.SensorNotFoundException;
 
 import java.util.List;
 import java.util.Optional;

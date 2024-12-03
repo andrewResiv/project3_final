@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,7 +36,7 @@ public class Measurement {
     private Sensor sensor;
 
     @Column(name = "created_at")
-    @CreationTimestamp
+    @CreationTimestamp()
     private Date createdAt;
 
     public Measurement(double value, boolean raining) {
@@ -44,4 +45,11 @@ public class Measurement {
     }
 
     public Measurement() {}
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+        if (sensor != null && !sensor.getMeasurements().contains(this)) {
+            sensor.getMeasurements().add(this); // Устанавливаем обратную связь
+        }
+    }
 }

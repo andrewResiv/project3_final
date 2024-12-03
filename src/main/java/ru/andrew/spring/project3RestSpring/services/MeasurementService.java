@@ -7,9 +7,8 @@ import ru.andrew.spring.project3RestSpring.models.Measurement;
 import ru.andrew.spring.project3RestSpring.models.Sensor;
 import ru.andrew.spring.project3RestSpring.repositories.MeasurementRepository;
 import ru.andrew.spring.project3RestSpring.repositories.SensorRepository;
-import ru.andrew.spring.project3RestSpring.util.SensorNotFoundException;
+import ru.andrew.spring.project3RestSpring.exceptions.SensorNotFoundException;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,24 +37,6 @@ public class MeasurementService {
     public void saveMeasurement(Measurement measurement) {
         Sensor sensor = sensorRepository.findByName(measurement.getSensor().getName())
                 .orElseThrow(SensorNotFoundException::new);
-        List<Measurement> measurements = sensor.getMeasurements();
-        measurements.add(measurement);
-        sensor.setMeasurements(measurements);
-        sensorRepository.save(sensor);
+        sensor.addMeasurement(measurement);
     }
-
-//    @Transactional
-//    public Measurement create(Measurement measurement) {
-//        Sensor sensor = sensorRepository.findByName(measurement.getSensor().getName())
-//                .orElseGet(() -> {
-//                    Sensor newSensor = new Sensor();
-//                    newSensor.setName(measurement.getSensor().getName());
-//                    return sensorRepository.save(newSensor);
-//                });
-//
-//        measurement.setSensor(sensor);
-//        //Добавим в измерение текущую дату.
-//        measurement.setCreatedAt(new Date(System.currentTimeMillis()));
-//        return measurementRepository.save(measurement);
-//    }
 }

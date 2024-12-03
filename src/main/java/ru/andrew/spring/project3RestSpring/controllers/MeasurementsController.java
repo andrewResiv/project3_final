@@ -12,10 +12,9 @@ import ru.andrew.spring.project3RestSpring.dto.MeasurementDTO;
 import ru.andrew.spring.project3RestSpring.models.Measurement;
 import ru.andrew.spring.project3RestSpring.models.Sensor;
 import ru.andrew.spring.project3RestSpring.services.MeasurementService;
-import ru.andrew.spring.project3RestSpring.util.MeasurementNotCreatedException;
+import ru.andrew.spring.project3RestSpring.exceptions.MeasurementNotCreatedException;
 import ru.andrew.spring.project3RestSpring.util.SensorValidator;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
