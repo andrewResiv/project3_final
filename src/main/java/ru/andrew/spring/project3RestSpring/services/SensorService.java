@@ -31,17 +31,19 @@ public class SensorService {
                 .map(this::convertToSensorDTO)
                 .collect(Collectors.toList());
     }
-    public SensorDTO findById(int id) {
-        return convertToSensorDTO(sensorRepository.findById(id).orElseThrow(SensorNotFoundException::new));
+    public Optional<SensorDTO> findById(int id) {
+        return sensorRepository.findById(id)
+                .map(this::convertToSensorDTO);
     }
 
-    public Optional<Sensor> findByName(String name) {
-        return sensorRepository.findByName(name);
+    public Optional<SensorDTO> findByName(String name) {
+        return sensorRepository.findByName(name)
+                .map(this::convertToSensorDTO);
     }
 
     @Transactional
-    public Sensor save(Sensor sensor) {
-        return sensorRepository.save(sensor);
+    public SensorDTO save(Sensor sensor) {
+        return convertToSensorDTO(sensorRepository.save(sensor));
     }
     @Transactional
     public void deleteById(int id) {

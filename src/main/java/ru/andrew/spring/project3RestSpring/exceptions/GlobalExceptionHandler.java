@@ -2,6 +2,7 @@ package ru.andrew.spring.project3RestSpring.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -22,6 +23,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SensorNotCreatedException.class)
     private ResponseEntity<SensorErrorResponse> handlerException(SensorNotCreatedException e) {
+        SensorErrorResponse response = new SensorErrorResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MeasurementNotCreatedException.class)
+    private ResponseEntity<SensorErrorResponse> handlerException(MeasurementNotCreatedException e) {
         SensorErrorResponse response = new SensorErrorResponse(
                 e.getMessage(),
                 System.currentTimeMillis()

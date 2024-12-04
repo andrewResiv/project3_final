@@ -14,6 +14,7 @@ import ru.andrew.spring.project3RestSpring.exceptions.SensorNotCreatedException;
 import ru.andrew.spring.project3RestSpring.util.SensorValidator;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -36,7 +37,7 @@ public class SensorsController {
     }
 
     @GetMapping("/{id}")
-    public SensorDTO getSensorById(@PathVariable int id) {
+    public Optional<SensorDTO> getSensorById(@PathVariable int id) {
         return sensorService.findById(id);
     }
 

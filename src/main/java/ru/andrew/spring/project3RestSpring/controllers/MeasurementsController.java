@@ -35,16 +35,12 @@ public class MeasurementsController {
 
     @GetMapping()
     public List<MeasurementDTO> getMeasurements() {
-        return measurementService.getAllMeasurements().stream()
-                .map(this::convertToMeasurementDTO)
-                .collect(Collectors.toList());
+        return measurementService.getAllMeasurements();
     }
 
     @PostMapping("/add")
     public  ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDTO measurementDTO,
                                       BindingResult bindingResult) {
-        Sensor sensor = modelMapper.map(measurementDTO, Sensor.class);
-        sensorValidator.validate(sensor, bindingResult);
         if (bindingResult.hasErrors()) {
             StringBuilder errorsMsg = new StringBuilder();
 
@@ -57,7 +53,7 @@ public class MeasurementsController {
             }
             throw new MeasurementNotCreatedException(errorsMsg.toString());
         }
-        measurementService.saveMeasurement(convertToMeasurement(measurementDTO));
+        measurementService.saveMeasurement(measurementDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
 
     }
@@ -65,20 +61,5 @@ public class MeasurementsController {
     @GetMapping("/rainyDaysCount")
     public Integer getRainyDaysCount() {
         return measurementService.countByRainingDays();
-    }
-
-    private MeasurementDTO convertToMeasurementDTO(Measurement measurement) {
-        return modelMapper.map(measurement, MeasurementDTO.class);
-    }
-    private Measurement convertToMeasurement(MeasurementDTO measurementDTO) {
-        Measurement measurement = new Measurement();
-        measurement.setValue(measurementDTO.getValue());
-        measurement.setRaining(measurementDTO.isRaining());
-
-        Sensor sensor = new Sensor();
-        sensor.setName(measurementDTO.getSensor().getName());
-        measurement.setSensor(sensor);
-
-        return measurement;
     }
 }
